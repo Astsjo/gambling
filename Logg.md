@@ -58,3 +58,15 @@ Nytt:
 Logg:
 
     Hittade ett fel som gjorde så att man inte kunde starta om efter att ha 0 poäng kvar. Fixat genom att lägga till raden "cont = False" som stoppar while-loopen. Hittade också ett fel med kortet som gjorde så att den inte försvann när man använde den.
+        
+<p>
+
+___
+<p>
+
+Nytt:
+
+    Lade till ny meny för att göra allternativ istället. Bytt tidigare bitar till funktioner.
+Logg:
+
+    Det var problematiskt först att lägga till eftersom en bra del av koden behövdes skriva om för att kunna använda funktioner. Det gick till slut, med problem här och där, som huvudsakligen är löst nu. Förråd fungerar inte än eftersom det inte är tillagt, men härnäst kommer jag updatera det existerande föremålssystemet samt skapa ett nytt förrådsystem åt det.

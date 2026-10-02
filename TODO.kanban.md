@@ -6,13 +6,10 @@
 
 ## To Do
 
-#### Inventory System
-<!-- id: task-1790852031706-18 -->
-
 ## Doing
 
-#### Menu
-<!-- id: task-1790940937662-12 -->
+#### Inventory System/Update Item System
+<!-- id: task-1790852031706-18 -->
 
 ## Done
 
@@ -24,3 +21,6 @@
 
 #### Developer Options
 <!-- id: task-1790851945622-11 -->
+
+#### Menu
+<!-- id: task-1790940937662-12 -->
