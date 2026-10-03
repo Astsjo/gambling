@@ -20,15 +20,20 @@ if dev_choice.lower() != "n":
 else:
     print()
 
+
 def shop(point, mult, jackpot_mult, mult_price, jail_card, has_item):
     while True:
+        print("#" * 50)
         print()
         print("Tillgängliga uppgraderingar/varor:")
         print()
         print(f"(1) {mult_price}p: Vinst multiplikation")
         print("(2) 10p: Get out of jail free card (inga förlorade poäng när igång och vid förlust)")
         print()
+        print("#" * 50)
+        print()
         shop_choice = input(f"Du har {point} poäng, välj alternativ [1-5] eller [n] för att avbryta: ")
+        print()
 
         if shop_choice.lower() == "n":
             break
@@ -60,63 +65,108 @@ def shop(point, mult, jackpot_mult, mult_price, jail_card, has_item):
         else:
             print("Vänligen välj ett alternativ.")
 
+        print()
+        print("#" * 50)
+        print()
         shop_cont = input("Vill du fortsätta handla [Y/n]: ")
+        print()
         if shop_cont.lower() != "n":
             print()
         else:
             break
     return point, mult, jackpot_mult, mult_price, jail_card, has_item
 
-        
 
-def item():
-    if has_item:
-        item = input("Vill du använda ett föremål [Y/n]: ")
+def item(jail_card, jail_card_active):
+    print()
+    while True:
+        print("#" * 50)
         print()
-        if item != "n":
-            while True:
+        print(f"(1) Du har {jail_card} kort tillgänglig.")
+        print()
+        print("#" * 50)
+        print()
+        
+        item_use = input("Vad vill du använda [1-5], eller [n] för att avbryta: ")
+        if item_use.lower() == "n":
+            print()
+            break
+        else:
+            try:
+                item_use = int(item_use)
+                break
+            except ValueError:
+                print("Vänligen välj en av alternativen.")
                 print()
-                print(f"(1) Du har {jail_card} kort tillgänglig.")
-                print()
-                
-                item_use = input("Vad vill du använda [1-5], eller [n] för att avbryta: ")
-                if item_use.lower() == "n":
-                    print()
-                    break
-                else:
-                    try:
-                        item_use = int(item_use)
-                        break
-                    except ValueError:
-                        print("Vänligen välj en av alternativen.")
-                        print()
 
-            if int(item_use) == 1:
-                if jail_card_active != True:
-                    if jail_card > 0:
-                        jail_card -= 1 
-                        jail_card_active = True
-                        print("Du har nu ett kort igång.")
-                    else:
-                        print("Du har inga kort tillgänglig!")
-                elif jail_card_active == True:
-                    print("Du har redan ett kort igång!")
+    if int(item_use) == 1:
+        if jail_card_active != True:
+            if jail_card > 0:
+                jail_card -= 1 
+                jail_card_active = True
+                print()
+                print()
+                print("Du har nu ett kort igång.")
             else:
-                print()
-
-        if jail_card <= 0:
-            has_item = False
-        elif jail_card >= 1:
-            has_item = True
+                print("Du har inga kort tillgänglig!")
+        elif jail_card_active == True:
+            print("Du har redan ett kort igång!")
     else:
-        print("Du har inga föremål.")
+        print()
+    return jail_card, jail_card_active
+
+
+def inventory(jail_card, jail_card_active, point, mult, jackpot_mult):
+    print()
+    print("#" * 50)
+    print()
+    print("Du har:")
+    print(f"{jail_card} Get out of jail free-kort.")
+    print()
+    print("Statestik:")
+    print(f"Du har {point} poäng.")
+    print(f"Du får {mult}x vid vinst och {jackpot_mult}x vid jackpot.")
+    print()
+    print("#" * 50)
+    print()
+    while True:
+        while True:
+            print("Vill du:")
+            print("(1) Återvända")
+            print("(2) Använda föremål")
+            print()
+            print("#" * 50)
+            print()
+            back = input("Välj alternativ [1-2]: ")
+            try:
+                back = int(back)
+                break
+            except ValueError:
+                print("Vänligen välj ett alternativ.")
+
+        if back == 2:
+            items = jail_card
+
+            if items > 0:
+                jail_card, jail_card_active = item(jail_card, jail_card_active)
+                break
+            elif items <= 0:
+                print()
+                print("Du har inga föremål!")
+                print()
+                print("#" * 50)
+                print()
+        elif back == 1:
+            break
+    return jail_card, jail_card_active
+
 
 def computer(point, cheat_choice, mult, jackpot_mult, jail_card_active):
     print()
     while True:
         choice = input("Datorn står och skakar två tärningar i handen. Tror du den kommer att slå [m]indre, [s]törre, eller [e]xact 6: ")
         print()
-        if ((choice.lower() == "mindre") or (choice.lower() == "m") or (choice.lower() == "större") or (choice.lower() == "s") or (choice.lower() == "exact") or (choice.lower() == "6") or (choice.lower() == "exact 6") or (choice.lower() == "e")):
+        if choice.lower() in ["mindre", "m", "större", "s", "exact", "6", "exact 6", "e"]:
             break
         else:
             print("Vänligen välj en av alternativen.")
@@ -139,9 +189,16 @@ def computer(point, cheat_choice, mult, jackpot_mult, jail_card_active):
             point -= amount
             break
 
-    # Datorns slag, sätts slumpat
-    if cheat_choice == " ":
+    # Datorns slag slumpas eller sätts om man valt vad det ska bli.
+    if cheat_choice.lower() in ["m", "mindre"]:
+        rnd_num = 1
+    elif cheat_choice.lower() in ["s", "större"]:
+        rnd_num = 12
+    elif cheat_choice.lower() in ["e", "exact"]:
+        rnd_num = 6
+    else:
         rnd_num = random.randint(1, 12)
+
     print("Datorn kastar tärningarna, de studsar omkring")
     time.sleep(1.2)
     print()
@@ -151,19 +208,19 @@ def computer(point, cheat_choice, mult, jackpot_mult, jail_card_active):
     print(f"Datorn slog {rnd_num}")
 
     # Kollar om gissningen är korrekt och updaterar vinsten/förlusten
-    if ((choice.lower() == "mindre") or (choice.lower() == "m")) and (rnd_num < 6):
+    if choice.lower() in ["m", "mindre"] and (rnd_num < 6):
         print("Du gissade rätt, du vann!")
         amount *= mult
         point += amount
         jail_card_active = False
         time.sleep(3)
-    elif ((choice.lower() == "större") or (choice.lower() == "s")) and (rnd_num > 6):
+    elif (choice.lower() in ["s", "större"]) and (rnd_num > 6):
         print("Datorn fick större än 6, du vann!")
         amount *= mult
         point += amount
         jail_card_active = False
         time.sleep(3)
-    elif ((choice.lower() == "exact") or (choice.lower() == "6") or (choice.lower() == "exact 6") or (choice.lower() == "e")) and (rnd_num == 6):
+    elif (choice.lower() in ["e", "exact", "6", "exact 6"]) and (rnd_num == 6):
         print("Den fick exact 6, du vann stort!")
         amount *= jackpot_mult
         point += amount
@@ -195,6 +252,7 @@ def menu(first_round):
         print()
         while True:
             menu_choice = input("Välj alternativ [1-4]: ")
+            print()
             try:
                 menu_choice = int(menu_choice)
                 break
@@ -274,8 +332,8 @@ while restart:
                         point, mult, jackpot_mult, mult_price, jail_card, has_item = shop(
                             point, mult, jackpot_mult, mult_price, jail_card, has_item
                         )
-    #                elif menu_choice == 3:
-    #                    inventory()
+                    elif menu_choice == 3:
+                        jail_card, jail_card_active = inventory(jail_card, jail_card_active, point, mult, jackpot_mult)
                     elif menu_choice == 4:
                         cont = False
                         print()

@@ -70,3 +70,15 @@ Nytt:
 Logg:
 
     Det var problematiskt först att lägga till eftersom en bra del av koden behövdes skriva om för att kunna använda funktioner. Det gick till slut, med problem här och där, som huvudsakligen är löst nu. Förråd fungerar inte än eftersom det inte är tillagt, men härnäst kommer jag updatera det existerande föremålssystemet samt skapa ett nytt förrådsystem åt det.
+        
+<p>
+
+___
+<p>
+
+Nytt:
+    
+    Föremål är tillbaka och förbättrad! Nu med ett nytt förråd där du kan se vilka föremål du har samt statestik och välja att använda de föremål du har.
+Logg:
+
+    Precis som förr var det tidskrävande, men i huvudsak en erfarenhetsproblem. Det mesta satt i antingen typos, slarvfel, eller med funktionerna. Det går aldrig att säga att ett spel är helt bugfri, men den fungerar rätt så stabilt just nu. 

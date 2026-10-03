@@ -6,10 +6,16 @@
 
 ## To Do
 
-## Doing
+#### More Items
+<!-- id: task-1791070098885-63 -->
 
-#### Inventory System/Update Item System
-<!-- id: task-1790852031706-18 -->
+#### Endings?
+<!-- id: task-1791070107419-76 -->
+
+#### Levels, bosses?
+<!-- id: task-1791070128701-91 -->
+
+## Doing
 
 ## Done
 
@@ -24,3 +30,6 @@
 
 #### Menu
 <!-- id: task-1790940937662-12 -->
+
+#### Inventory System/Update Item System
+<!-- id: task-1790852031706-18 -->
