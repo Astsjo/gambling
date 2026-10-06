@@ -17,6 +17,9 @@
 
 ## Doing
 
+#### Tutorial
+<!-- id: task-1791280892069-24 -->
+
 ## Done
 
 #### Main Game

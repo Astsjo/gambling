@@ -1,6 +1,7 @@
 import random
 import time
 import sys
+from validator import valid_int, valid_int_string
 
 restart = True
 password = "Test"
@@ -9,8 +10,8 @@ menu_choice = " "
 has_item = False
 
 print()
-dev_choice = input("Öppna utvecklarinställningar [Y/n]: ")
-if dev_choice.lower() != "n":
+dev_choice = input("Öppna utvecklarinställningar [Y/n]: ").strip().lower()
+if dev_choice != "n":
     pass_input = input("Lösenord: ") 
     if pass_input == password:
         dev = True
@@ -20,6 +21,63 @@ if dev_choice.lower() != "n":
 else:
     print()
 
+def grammar_tutorial():
+    print()
+    print("#" * 50)
+    print()
+    print("Det är ganska enkelt.")
+    time.sleep(1.5)
+    print("I ja/nej alternativ (ser ut [y/n]) räker det med ett")
+    print("av alternativen. Oftast kommer en bokstav vara en versal,")
+    print("den är förvalda alternativet om du inte väljer en av")
+    print("alternativen.")
+    time.sleep(6)
+    print("Så ett alterativ som ser ut [Y/n] kommer ett enkel enter")
+    print("eller annan karaktär bli ett ja, och ett N kommer bli nej.")
+    print("Det går att svara i både gemener och versaler alltid.")
+    time.sleep(6)
+    print()
+    print("När det finns alternativ i en mening (som [e]xact)")
+    print("så räker det med att skriva enbart E, eller hela ordet.")
+    time.sleep(4)
+    print()
+    print("Alternativ mellan någonting förvalt, som en lista,")
+    print("behöver du bara skriva siffran som hör ihop med det alternativet.")
+    time.sleep(4)
+    print()
+    print("Om du givit ett svar som inte fungerar kommer du bes")
+    print("välja ett av alternativen. Om du inte väljer någonting")
+    print("i en ja/nej fråga kommer det bli versalen automatiskt.")
+    time.sleep(8)
+    print()
+    print("#" * 50)
+    print()
+
+def game_tutorial():
+    print("#" * 50)
+    print()
+    print("Välkommen!")
+    time.sleep(1.5)
+    print("Reglerna är enkel: ")
+    time.sleep(2)
+    print("Du börjar med ett antal poäng.")
+    time.sleep(2)
+    print("Du möter en dator med två tärningar.")
+    time.sleep(2)
+    print("Du kommer gissa om summan av tärningarna kommer vara")
+    print("mindre än 6, större än 6, eller exact 6.")
+    time.sleep(4)
+    print("Gissar du rätt tjänar du poäng. Gissar du fel så")
+    print("förlorar du poängen du lade.")
+    time.sleep(4)
+    print("Du tjänar extra om du gissar rätt på exact 6.")
+    time.sleep(2)
+    print("Mellan rundor kan du kolla ditt föråd, statestik,")
+    print("föremål, affären, och använda föremål du har.")
+    print()
+    print("#" * 50)
+    print()
+    time.sleep(6)
 
 def shop(point, mult, jackpot_mult, mult_price, jail_card, has_item):
     while True:
@@ -32,12 +90,12 @@ def shop(point, mult, jackpot_mult, mult_price, jail_card, has_item):
         print()
         print("#" * 50)
         print()
-        shop_choice = input(f"Du har {point} poäng, välj alternativ [1-5] eller [n] för att avbryta: ")
+        shop_choice = valid_int_string(f"Du har {point} poäng, välj alternativ [1-5] eller [n] för att avbryta: ".strip().lower(), allowed_strings=["n"])
         print()
 
-        if shop_choice.lower() == "n":
+        if shop_choice == "n":
             break
-        elif int(shop_choice) == 1:
+        elif shop_choice == 1:
             if point >= mult_price:
                 mult += (mult/2)
                 jackpot_mult += (jackpot_mult/2)
@@ -53,7 +111,7 @@ def shop(point, mult, jackpot_mult, mult_price, jail_card, has_item):
             else:
                 print()
                 print("Du har inte råd!")
-        elif int(shop_choice) == 2:
+        elif shop_choice == 2:
             if point >= 10:
                 jail_card += 1
                 point -= 10
@@ -68,9 +126,9 @@ def shop(point, mult, jackpot_mult, mult_price, jail_card, has_item):
         print()
         print("#" * 50)
         print()
-        shop_cont = input("Vill du fortsätta handla [Y/n]: ")
+        shop_cont = input("Vill du fortsätta handla [Y/n]: ").strip().lower()
         print()
-        if shop_cont.lower() != "n":
+        if shop_cont != "n":
             print()
         else:
             break
@@ -87,33 +145,25 @@ def item(jail_card, jail_card_active):
         print("#" * 50)
         print()
         
-        item_use = input("Vad vill du använda [1-5], eller [n] för att avbryta: ")
-        if item_use.lower() == "n":
+        item_use = valid_int_string("Vad vill du använda [1-5], eller [n] för att avbryta: ".strip().lower(), allowed_strings=["n"])
+        if item_use == "n":
             print()
             break
+        elif item_use == 1:
+            if jail_card_active != True:
+                if jail_card > 0:
+                    jail_card -= 1 
+                    jail_card_active = True
+                    print()
+                    print()
+                    print("Du har nu ett kort igång.")
+                else:
+                    print("Du har inga kort tillgänglig!")
+            elif jail_card_active == True:
+                print("Du har redan ett kort igång!")
         else:
-            try:
-                item_use = int(item_use)
-                break
-            except ValueError:
-                print("Vänligen välj en av alternativen.")
-                print()
-
-    if int(item_use) == 1:
-        if jail_card_active != True:
-            if jail_card > 0:
-                jail_card -= 1 
-                jail_card_active = True
-                print()
-                print()
-                print("Du har nu ett kort igång.")
-            else:
-                print("Du har inga kort tillgänglig!")
-        elif jail_card_active == True:
-            print("Du har redan ett kort igång!")
-    else:
-        print()
-    return jail_card, jail_card_active
+            print()
+        return jail_card, jail_card_active
 
 
 def inventory(jail_card, jail_card_active, point, mult, jackpot_mult):
@@ -137,13 +187,8 @@ def inventory(jail_card, jail_card_active, point, mult, jackpot_mult):
             print()
             print("#" * 50)
             print()
-            back = input("Välj alternativ [1-2]: ")
-            try:
-                back = int(back)
-                break
-            except ValueError:
-                print("Vänligen välj ett alternativ.")
-
+            back = valid_int("Välj alternativ [1-2]: ".strip())
+            break
         if back == 2:
             items = jail_card
 
@@ -164,25 +209,17 @@ def inventory(jail_card, jail_card_active, point, mult, jackpot_mult):
 def computer(point, cheat_choice, mult, jackpot_mult, jail_card_active):
     print()
     while True:
-        choice = input("Datorn står och skakar två tärningar i handen. Tror du den kommer att slå [m]indre, [s]törre, eller [e]xact 6: ")
+        choice = input("Datorn står och skakar två tärningar i handen. Tror du den kommer att slå [m]indre, [s]törre, eller [e]xact 6: ").strip().lower()
         print()
-        if choice.lower() in ["mindre", "m", "större", "s", "exact", "6", "exact 6", "e"]:
+        if choice in ["mindre", "m", "större", "s", "exact", "6", "exact6", "e"]:
             break
         else:
             print("Vänligen välj en av alternativen.")
 
     # Användaren väljer hur mycket de lägger på sin gissning
     while True:
-        while True:
-            amount = input(f"Hur mycket vill du lägga (du har {point} just nu): ")
-            print()
-            try:
-                amount = int(amount)
-                break
-            except ValueError:
-                print("Vänligen använd ett tal.")
-                print()
-            
+        amount = valid_int(f"Hur mycket vill du lägga (du har {point} just nu): ".strip())
+        print()
         if (point - amount) < 0:
             print("Du kan inte välja mer än poängen du har!")
         else:
@@ -231,6 +268,7 @@ def computer(point, cheat_choice, mult, jackpot_mult, jail_card_active):
             print("Du gissade fel och förlorade, men kortet förhindrade någon förlust av poäng!")
             point += amount
             jail_card_active = False
+            time.sleep(3)
         else:
             print("Du gissade fel, du förlorade.")
             amount = 0
@@ -247,17 +285,13 @@ def menu(first_round):
         print("(2) Gå till affären.")
         print("(3) Förråd.")
         print("(4) Avsluta.")
+        print("(5) Tutorials.")
         print()
         print("#" * 20)
         print()
-        while True:
-            menu_choice = input("Välj alternativ [1-4]: ")
-            print()
-            try:
-                menu_choice = int(menu_choice)
-                break
-            except ValueError:
-               print("Vänligen välj en av alternativen.") 
+        menu_choice = valid_int("Välj alternativ [1-5]: ".strip())
+        print()
+
         print("#" * 20)
     elif first_round == True:
         print()
@@ -265,19 +299,12 @@ def menu(first_round):
         print()
         print("(1) Gå till datorn.")
         print("(2) Avsluta.")
+        print("(3) Tutorials.")
         print()
         print("#" * 20)
         print()
-        while True:
-            menu_choice = input("Välj alternativ [1-2]: ")
-            try:
-                menu_choice = int(menu_choice)
-                break
-            except ValueError:
-                print()
-                print("Vänligen välj en av alternativen.") 
-                print()
-        menu_choice = int(menu_choice)
+        menu_choice = valid_int("Välj alternativ [1-3]: ".strip())
+
     return menu_choice
 
 
@@ -300,16 +327,26 @@ while restart:
         if point > 0:
             if dev == True:
                 cheat_choice = input("[M]indre, [S]törre, [E]xact: ")
-                if ((cheat_choice.lower() == "m") or (cheat_choice.lower() == "mindre")):
+                if (cheat_choice.lower() in ["m", "mindre"]):
                     rnd_num = 1
-                elif ((cheat_choice.lower() == "s") or (cheat_choice.lower() == "större")):
+                elif (cheat_choice.lower() in ["s", "större"]):
                     rnd_num = 12
-                elif ((cheat_choice.lower() == "e") or (cheat_choice.lower() == "exact")):
+                elif (cheat_choice.lower() in ["e", "exact"]):
                     rnd_num = 6
                 else:
                     cheat_choice = " "
 
             while (point > 0):
+                if first_round == True:
+                    print()
+                    tutorial_grammar = input("Vet du hur alternativen i spelet fungerar [y/N]: ").strip().lower()
+                    if tutorial_grammar != "y":
+                        grammar_tutorial()
+                    tutorial_game = input("Vill du ha en tutorial [Y/n]: ").strip().lower()
+                    print()
+                    if tutorial_game != "n":
+                        game_tutorial()
+                        
                 menu_choice = menu(first_round)
                 if first_round == True:
                     if menu_choice == 1:
@@ -322,6 +359,21 @@ while restart:
                         print(f"Tack för att du spelade, du slutade med {point} poäng!")
                         print()
                         sys.exit(0)
+                    elif menu_choice == 3:
+                        print("#" * 20)
+                        print()
+                        print("(1) Alternativ.")
+                        print("(2) Spelet.")
+                        print()
+                        print("#" * 20)
+                        print()
+                        tutorial_choice = valid_int_string("Välj tutorial [1-2] eller [n] för att avbryta: ".strip().lower(), allowed_strings=["n"])
+                        if tutorial_choice == "n":
+                            print()
+                        elif tutorial_choice == 1:
+                            grammar_tutorial()
+                        elif tutorial_choice == 2:
+                            game_tutorial()
                     first_round = False
                 elif first_round != True:
                     if menu_choice == 1:
@@ -340,11 +392,26 @@ while restart:
                         print(f"Tack för att du spelade, du slutade med {point} poäng!")
                         print()
                         sys.exit(0)
+                    elif menu_choice == 5:
+                        print("#" * 20)
+                        print()
+                        print("(1) Alternativ.")
+                        print("(2) Spelet.")
+                        print()
+                        print("#" * 20)
+                        print()
+                        tutorial_choice = valid_int_string("Välj tutorial [1-2] eller [n] för att avbryta: ".strip().lower(), allowed_strings=["n"])
+                        if tutorial_choice == "n":
+                            print()
+                        elif tutorial_choice == 1:
+                            grammar_tutorial()
+                        elif tutorial_choice == 2:
+                            game_tutorial()
         else: 
             print()
-            game_over = input("Du har inga poäng kvar! Vill du starta om [Y/n]: ")
+            game_over = input("Du har inga poäng kvar! Vill du starta om [Y/n]: ").strip().lower()
             print()
-            if game_over.lower() == "n":
+            if game_over == "n":
                 sys.exit(0)
             else:
                 restart = True
