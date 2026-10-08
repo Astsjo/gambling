@@ -17,9 +17,6 @@
 
 ## Doing
 
-#### Tutorial
-<!-- id: task-1791280892069-24 -->
-
 ## Done
 
 #### Main Game
@@ -36,3 +33,6 @@
 
 #### Inventory System/Update Item System
 <!-- id: task-1790852031706-18 -->
+
+#### Tutorial
+<!-- id: task-1791280892069-24 -->
